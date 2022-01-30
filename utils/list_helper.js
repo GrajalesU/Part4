@@ -16,7 +16,6 @@ const mostBlogs = (blogs) => {
     blog.author in counter ? counter[blog.author] += 1 : counter[blog.author] = 1
   })
   const sortedCounter = Object.entries(counter).sort(([, v1], [, v2]) => v2 - v1)
-  sortedCounter.map((key, value) => [(key, value)])
   const [name, nOfBlogs] = sortedCounter[0]
   return { author: name, blogs: nOfBlogs }
 }
