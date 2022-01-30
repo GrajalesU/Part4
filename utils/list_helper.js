@@ -21,6 +21,18 @@ const mostBlogs = (blogs) => {
   return { author: name, blogs: nOfBlogs }
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return null
+  const counter = {}
+  blogs.forEach((blog) => {
+    // eslint-disable-next-line no-unused-expressions
+    blog.author in counter ? counter[blog.author] += blog.likes : counter[blog.author] = blog.likes
+  })
+  const sortedCounter = Object.entries(counter).sort(([, v1], [, v2]) => v2 - v1)
+  const [name, likes] = sortedCounter[0]
+  return { author: name, likes }
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs,
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes,
 }
