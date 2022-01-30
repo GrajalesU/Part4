@@ -8,4 +8,19 @@ const favoriteBlog = (blogs) => (blogs.length === 0 ? null : blogs.reduce(
   {},
 ))
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) return null
+  const counter = {}
+  blogs.forEach((blog) => {
+    // eslint-disable-next-line no-unused-expressions
+    blog.author in counter ? counter[blog.author] += 1 : counter[blog.author] = 1
+  })
+  const sortedCounter = Object.entries(counter).sort(([, v1], [, v2]) => v2 - v1)
+  sortedCounter.map((key, value) => [(key, value)])
+  const [name, nOfBlogs] = sortedCounter[0]
+  return { author: name, blogs: nOfBlogs }
+}
+
+module.exports = {
+  dummy, totalLikes, favoriteBlog, mostBlogs,
+}
