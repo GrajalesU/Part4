@@ -60,6 +60,7 @@ test('a specific blog is within the returned blogs', async () => {
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'async/await simplifies making async calls',
+    url: 'test',
     author: 'Juan Manuel Grajales',
   }
 
@@ -86,6 +87,7 @@ test('id property is defined for each blog', async () => {
 test('0 likes as default for a new blog', async () => {
   const newBlog = {
     title: 'async/await simplifies making async calls',
+    url: 'test',
     author: 'Juan Manuel Grajales',
   }
 
@@ -101,6 +103,27 @@ test('0 likes as default for a new blog', async () => {
   expect(blogInBD.likes).toBe(0)
 })
 
+test('return 400 if blog do not have title or url', async () => {
+  const newBlogWithoutUrl = {
+    title: 'async/await simplifies making async calls',
+    author: 'Juan Manuel Grajales',
+  }
+
+  const newBlogWithoutTitle = {
+    url: 'test',
+    author: 'Juan Manuel Grajales',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithoutUrl)
+    .expect(400)
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithoutTitle)
+    .expect(400)
+})
 afterAll(() => {
   mongoose.connection.close()
 })
