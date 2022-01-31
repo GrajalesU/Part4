@@ -83,6 +83,24 @@ test('id property is defined for each blog', async () => {
   expect(blog.id).toBeDefined()
 })
 
+test('0 likes as default for a new blog', async () => {
+  const newBlog = {
+    title: 'async/await simplifies making async calls',
+    author: 'Juan Manuel Grajales',
+  }
+
+  const res = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogInBD = res.body
+
+  expect(blogInBD.likes).toBeDefined()
+  expect(blogInBD.likes).toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
