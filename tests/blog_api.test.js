@@ -76,6 +76,13 @@ test('a valid blog can be added', async () => {
   expect(titles).toContain('async/await simplifies making async calls')
 })
 
+test('id property is defined for each blog', async () => {
+  const res = await api.get('/api/blogs')
+  const blog = res.body[0]
+
+  expect(blog.id).toBeDefined()
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

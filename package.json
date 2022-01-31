@@ -28,6 +28,7 @@
     "mongoose": "^6.1.8"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testTimeout": 60000
   }
 }
