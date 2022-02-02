@@ -7,25 +7,24 @@ userRouter.post('/', async (req, res, next) => {
 
   const saltRounds = 10
   if (body.password.length < 3) {
-    next(
+    return next(
       {
         name: 'ValidationError',
         message: 'The password length must be greater than or equal to 3',
       },
     )
-  } else {
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-    const user = new User({
-      username: body.username,
-      name: body.name,
-      passwordHash,
-    })
-
-    const savedUser = await user.save()
-
-    res.json(savedUser)
   }
+  const passwordHash = await bcrypt.hash(body.password, saltRounds)
+
+  const user = new User({
+    username: body.username,
+    name: body.name,
+    passwordHash,
+  })
+
+  const savedUser = await user.save()
+
+  return res.json(savedUser)
 })
 
 userRouter.get('/', async (req, res) => {
