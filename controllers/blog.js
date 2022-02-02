@@ -41,9 +41,16 @@ blogRouter.put('/:id', async (request, response) => {
   response.json(updatedBlog)
 })
 
-blogRouter.delete('/:id', async (request, response) => {
-  const deletedBlog = await Blog.findByIdAndDelete(request.params.id)
-  response.json(deletedBlog)
+blogRouter.delete('/:id', async (request, response, next) => {
+  const { token } = request
+  const { id } = jwt.verify(token, process.env.SECRET)
+  if (!token || !id) { return next({ name: 'Unauthorized', message: 'Token missing or invalid' }) }
+  const { user } = await Blog.findById(request.params.id)
+  if (id === user.toString()) {
+    const deletedBlog = await Blog.findByIdAndDelete(request.params.id)
+    return response.json(deletedBlog)
+  }
+  return next({ name: 'Unauthorized', message: 'The blog you are trying to delete is not your own.' })
 })
 
 module.exports = blogRouter
